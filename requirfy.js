@@ -11,11 +11,11 @@ function getExtension(fileName) {
 }
 
 (function recurseDirs(dir) {
-	for (let child of fs.readdirSync(dir, {withFileTypes: true})) {
-		if (child.isDirectory()) {
-			recurseDirs(path.join(dir, child.name))
-		} else if (getExtension(child.name) == '.js'){
-			fsp.readFile(path.join(dir, child.name), 'utf8')
+	for (let file of fs.readdirSync(dir, {withFileTypes: true})) {
+		if (file.isDirectory()) {
+			recurseDirs(path.join(dir, file.name))
+		} else if (getExtension(file.name) == '.js'){
+			fsp.readFile(path.join(dir, file.name), 'utf8')
 				.then(code => {
 					let
 						exportDefault = code.match(/export\s+default\s+(?<module>[^;\s]+)/),
@@ -44,8 +44,8 @@ function getExtension(fileName) {
 					}
 
 					if (rewrite) {
-						console.log(child.name);
-						fsp.writeFile(path.join(dir, child.name), code);
+						console.log(file.name);
+						fsp.writeFile(path.join(dir, file.name), code);
 					}
 				});
 		}
