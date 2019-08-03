@@ -6,11 +6,11 @@ const
 const dir = process.argv[2] || __dirname;
 
 (function recurseDirs(dir) {
-	for (let file of fs.readdirSync(dir, {withFileTypes: true})) {
-		if (file.isDirectory()) {
-			recurseDirs(path.join(dir, file.name))
-		} else if (/\.js$/.test(file.name)){
-			fsp.readFile(path.join(dir, file.name), 'utf8')
+	for (let entry of fs.readdirSync(dir, {withFileTypes: true})) {
+		if (entry.isDirectory()) {
+			recurseDirs(path.join(dir, entry.name))
+		} else if (/\.js$/.test(entry.name)){
+			fsp.readFile(path.join(dir, entry.name), 'utf8')
 				.then(code => {
 					let
 						exportDefault = code.match(/export\s+default\s+(?<module>[^;\s]+)/),
@@ -41,8 +41,8 @@ const dir = process.argv[2] || __dirname;
 					}
 
 					if (rewrite) {
-						console.log(file.name);
-						fsp.writeFile(path.join(dir, file.name), code);
+						console.log(entry.name);
+						fsp.writeFile(path.join(dir, entry.name), code);
 					}
 				});
 		}
