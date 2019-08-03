@@ -3,18 +3,13 @@ const
 	fsp = fs.promises,
 	path = require('path');
 
-const dir = process.argv[2];
-
-function getExtension(fileName) {
-	let match = fileName.match(/\..+$/)
-	return match ? match[0] : '';
-}
+const dir = process.argv[2] || __dirname;
 
 (function recurseDirs(dir) {
 	for (let file of fs.readdirSync(dir, {withFileTypes: true})) {
 		if (file.isDirectory()) {
 			recurseDirs(path.join(dir, file.name))
-		} else if (getExtension(file.name) == '.js'){
+		} else if (/\.js$/.test(file.name)){
 			fsp.readFile(path.join(dir, file.name), 'utf8')
 				.then(code => {
 					let
