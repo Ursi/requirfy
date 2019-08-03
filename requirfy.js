@@ -26,7 +26,9 @@ function getExtension(fileName) {
 						rewrite = true;
 					}
 
-					let namedExports = code.match(/export .+?[;\n]/g);
+					let subRe = 'export .+?[;\\n]'
+					//let namedExports = code.match(/(?<=[;\}]\s*)(export .+?[;\n])|^export .+?[;\n]/g);
+					let namedExports = code.match(RegExp(`(?<=[;\\}]\\s*)(${subRe})|^${subRe}`, 'g'))
 					if (namedExports) {
 						for (let nExp of namedExports) {
 							code = code.replace(nExp, '');
