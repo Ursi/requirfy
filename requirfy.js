@@ -9,7 +9,7 @@ const dir = process.argv[2] || __dirname;
 	for (let entry of fs.readdirSync(dir, {withFileTypes: true})) {
 		if (entry.isDirectory()) {
 			recurseDirs(path.join(dir, entry.name))
-		} else if (/\.js$/.test(entry.name)){
+		} else if (entry.name.endsWith('.js')){
 			fsp.readFile(path.join(dir, entry.name), 'utf8')
 				.then(code => {
 					let
