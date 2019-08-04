@@ -21,9 +21,9 @@ const dir = process.argv[2] || __dirname;
 						rewrite = true;
 					}
 
-					let subRe = 'export .+?[;\\n]'
+					let subRe = String.raw`export .+?[;\n]`
 					//let namedExports = code.match(/(?<=[;\}]\s*)(export .+?[;\n])|^export .+?[;\n]/g);
-					let namedExports = code.match(RegExp(`(?<=[;\\}]\\s*)(${subRe})|^${subRe}`, 'g'))
+					let namedExports = code.match(RegExp(String.raw`(?<=[;\}]\s*)(${subRe})|^${subRe}`, 'g'))
 					if (namedExports) {
 						for (let nExp of namedExports) {
 							code = code.replace(nExp, '');
